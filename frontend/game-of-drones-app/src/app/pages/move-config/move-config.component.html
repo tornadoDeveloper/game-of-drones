@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="header">
+    <button class="btn btn-secondary" (click)="goBack()">Back</button>
+    <h1>Configure Moves</h1>
+  </div>
+
+  @if (error) { <p class="msg error">{{ error }}</p> }
+  @if (success) { <p class="msg success">{{ success }}</p> }
+
+  <div class="moves-grid">
+    @for (move of moves; track move.id) {
+      <div class="move-card card">
+        <div class="move-header">
+          <h3>{{ move.name }}</h3>
+          <button class="btn btn-danger btn-sm" (click)="deleteMove(move)">Delete</button>
+        </div>
+
+        <p class="label">Kills:</p>
+        <div class="checkboxes">
+          @for (other of moves; track other.id) {
+            @if (other.id !== move.id) {
+              <label class="checkbox-item">
+                <input
+                  type="checkbox"
+                  [checked]="move.killsMoveIds.includes(other.id)"
+                  (change)="toggleKills(move.id, other.id)"
+                />
+                {{ other.name }}
+              </label>
+            }
+          }
+        </div>
+
+        <button class="btn btn-primary btn-sm mt-2" (click)="saveRules(move)">Save Rules</button>
+      </div>
+    }
+  </div>
+
+  <div class="add-move card mt-4">
+    <h2>Add New Move</h2>
+
+    <div class="form-group mt-2">
+      <label>Move Name</label>
+      <input type="text" [(ngModel)]="newMoveName" placeholder="e.g. Lizard" maxlength="30" />
+    </div>
+
+    <p class="label mt-2">Kills:</p>
+    <div class="checkboxes">
+      @for (move of moves; track move.id) {
+        <label class="checkbox-item">
+          <input
+            type="checkbox"
+            [checked]="newMoveKills.includes(move.id)"
+            (change)="toggleNewKills(move.id)"
+          />
+          {{ move.name }}
+        </label>
+      }
+    </div>
+
+    <button class="btn btn-primary mt-3" (click)="addMove()" [disabled]="loading || !newMoveName.trim()">
+      {{ loading ? 'Adding...' : 'Add Move' }}
+    </button>
+  </div>
+</div>

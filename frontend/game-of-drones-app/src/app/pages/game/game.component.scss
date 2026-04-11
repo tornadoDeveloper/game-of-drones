@@ -1,0 +1,119 @@
+.game-layout {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 100vh;
+  align-items: flex-start;
+  padding-top: 3rem;
+}
+
+.main-panel {
+  flex: 1;
+
+  .round-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .score-inline {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    font-size: 1rem;
+    opacity: 0.7;
+
+    .separator {
+      opacity: 0.4;
+    }
+  }
+}
+
+.move-card, .reveal-card {
+  text-align: center;
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hint {
+    opacity: 0.5;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+.reveal-card {
+  .round-result {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #a78bfa;
+  }
+}
+
+.error {
+  color: #f87171;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.score-panel {
+  width: 240px;
+  flex-shrink: 0;
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.9rem;
+    }
+
+    th {
+      opacity: 0.5;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    td.draw {
+      opacity: 0.4;
+      font-style: italic;
+    }
+  }
+
+  .no-rounds {
+    opacity: 0.4;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+}
+
+@media (max-width: 640px) {
+  .game-layout {
+    flex-direction: column;
+  }
+
+  .score-panel {
+    width: 100%;
+  }
+}

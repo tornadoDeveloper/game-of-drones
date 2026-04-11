@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="hero">
+    <h1>Game of Drones</h1>
+    <p class="subtitle">Two players enter. One conquers.</p>
+
+    <div class="actions">
+      <button class="btn btn-primary btn-large" (click)="startGame()">Start Game</button>
+      <button class="btn btn-secondary mt-2" (click)="goToConfig()">Configure Moves</button>
+    </div>
+  </div>
+
+  @if (players.length > 0) {
+    <div class="leaderboard card mt-4">
+      <h2>Leaderboard</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Games Won</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (player of players; track player.id; let i = $index) {
+            <tr [class.top]="i === 0">
+              <td>{{ i + 1 }}</td>
+              <td>{{ player.name }}</td>
+              <td>{{ player.totalWins }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

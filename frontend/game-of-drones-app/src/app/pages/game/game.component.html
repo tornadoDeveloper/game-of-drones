@@ -1,0 +1,95 @@
+<div class="game-layout">
+  <div class="main-panel">
+    @if (game) {
+      <div class="round-header">
+        <h1>Round {{ game.rounds.length + (phase === 'reveal' ? 0 : 1) }}</h1>
+        <div class="score-inline">
+          <span>{{ game.player1.name }}: {{ player1Wins }}</span>
+          <span class="separator">vs</span>
+          <span>{{ game.player2.name }}: {{ player2Wins }}</span>
+        </div>
+      </div>
+
+      @if (phase === 'player1') {
+        <div class="move-card card">
+          <h2>{{ game.player1.name }}'s Turn</h2>
+          <p class="hint">Player 2, please look away!</p>
+
+          <div class="form-group mt-3">
+            <label>Select Move</label>
+            <select [(ngModel)]="player1MoveId">
+              @for (move of moves; track move.id) {
+                <option [value]="move.id">{{ move.name }}</option>
+              }
+            </select>
+          </div>
+
+          <button class="btn btn-primary mt-3" (click)="confirmPlayer1Move()">OK</button>
+        </div>
+      }
+
+      @if (phase === 'player2') {
+        <div class="move-card card">
+          <h2>{{ game.player2.name }}'s Turn</h2>
+          <p class="hint">Player 1, please look away!</p>
+
+          <div class="form-group mt-3">
+            <label>Select Move</label>
+            <select [(ngModel)]="player2MoveId">
+              @for (move of moves; track move.id) {
+                <option [value]="move.id">{{ move.name }}</option>
+              }
+            </select>
+          </div>
+
+          <button class="btn btn-primary mt-3" (click)="submitRound()" [disabled]="submitting">
+            {{ submitting ? 'Computing...' : 'OK' }}
+          </button>
+        </div>
+      }
+
+      @if (phase === 'reveal') {
+        <div class="reveal-card card">
+          @if (lastRoundResult) {
+            <p class="round-result">{{ lastRoundResult }}</p>
+          }
+          @if (!game.winner) {
+            <button class="btn btn-primary mt-3" (click)="nextRound()">Next Round</button>
+          } @else {
+            <p class="hint mt-2">Redirecting to winner screen...</p>
+          }
+        </div>
+      }
+
+      @if (error) {
+        <p class="error mt-2">{{ error }}</p>
+      }
+    }
+  </div>
+
+  <div class="score-panel card">
+    <h3>Score</h3>
+    @if (game && game.rounds.length > 0) {
+      <table>
+        <thead>
+          <tr>
+            <th>Round</th>
+            <th>Winner</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (round of game.rounds; track round.roundNumber) {
+            <tr>
+              <td>{{ round.roundNumber }}</td>
+              <td [class.draw]="!round.winnerName">
+                {{ round.winnerName || 'Draw' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p class="no-rounds">No rounds yet</p>
+    }
+  </div>
+</div>

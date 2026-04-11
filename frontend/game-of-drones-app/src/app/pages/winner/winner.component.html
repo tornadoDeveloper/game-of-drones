@@ -1,0 +1,19 @@
+<div class="winner-container">
+  @if (game.winner) {
+    <div class="winner-card card">
+      <p class="headline">We have a WINNER!!</p>
+      <h1 class="champion">{{ game.winner!.name }} is the new EMPEROR!</h1>
+
+      <div class="final-score mt-3">
+        <span>{{ game.player1.name }}: {{ countWins(game.player1.name) }}</span>
+        <span class="vs">vs</span>
+        <span>{{ game.player2.name }}: {{ countWins(game.player2.name) }}</span>
+      </div>
+
+      <div class="btn-group mt-4">
+        <button class="btn btn-primary" (click)="playAgain()">Play Again</button>
+        <button class="btn btn-secondary mt-2" (click)="goToConfig()">Configure Moves</button>
+      </div>
+    </div>
+  }
+</div>
