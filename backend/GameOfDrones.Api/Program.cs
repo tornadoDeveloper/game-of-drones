@@ -12,16 +12,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<GameService>();
 
-if (builder.Environment.IsDevelopment())
+builder.Services.AddCors(options =>
 {
-    builder.Services.AddCors(options =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        options.AddPolicy("AllowAngular", policy =>
-            policy.WithOrigins(builder.Configuration["AllowedOrigin"] ?? "http://localhost:4200")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod());
+        var allowedOrigin = builder.Configuration["AllowedOrigin"];
+        if (!string.IsNullOrEmpty(allowedOrigin))
+            policy.WithOrigins(allowedOrigin).AllowAnyHeader().AllowAnyMethod();
+        else
+            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
-}
+});
 
 var app = builder.Build();
 
@@ -46,10 +47,7 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors("AllowAngular");
-}
+app.UseCors("AllowFrontend");
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
