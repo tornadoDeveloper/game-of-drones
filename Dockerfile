@@ -35,9 +35,9 @@ WORKDIR /app
 
 COPY --from=backend-build /app/publish ./
 
-ENV ASPNETCORE_URLS=http://0.0.0.0:${PORT:-8080}
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-EXPOSE 8080
+EXPOSE 10000
 
-ENTRYPOINT ["dotnet", "GameOfDrones.Api.dll"]
+# Use shell form so $PORT is expanded at runtime (Render injects PORT=10000)
+ENTRYPOINT ["sh", "-c", "exec dotnet GameOfDrones.Api.dll --urls http://0.0.0.0:${PORT:-8080}"]
