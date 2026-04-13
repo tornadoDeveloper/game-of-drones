@@ -58,6 +58,10 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
+// UseRouting must be explicit so UseCors runs after it.
+// This lets the CORS middleware intercept OPTIONS preflights
+// before they reach the controllers (which would return 405).
+app.UseRouting();
 app.UseCors("AllowFrontend");
 
 app.UseDefaultFiles();
