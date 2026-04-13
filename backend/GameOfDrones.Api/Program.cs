@@ -1,9 +1,18 @@
 using GameOfDrones.Api.Data;
 using GameOfDrones.Api.Services;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Trust all proxies (Render uses multiple proxy hops)
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services.AddControllers();
 
@@ -32,6 +41,8 @@ using (var scope = app.Services.CreateScope())
     if (db.Database.IsRelational())
         db.Database.Migrate();
 }
+
+app.UseForwardedHeaders();
 
 app.UseExceptionHandler(errorApp =>
 {
